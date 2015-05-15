@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "_default": {
+            "link": "mgclient"
+        }, 
+        "mgclient": {
+            "applicationId": "app-ID",
+            "masterKey": "app-Key"
+        }
+    }
+}
