@@ -4,11 +4,27 @@ module.exports.index  = function(req, res) {
 };
 
 module.exports.send = function(req, res) {
-  var mg = new (require("mailgun").Mailgun);
-  var packet = req.body.input; // Data should be a JSON object...
+  if(!req.xhr) { // if request is not ajax
+    res.status(404).end();
+    return;
+  }
 
-  console.warn(packet);
-  res.render(packet);
+  var mg = new (require("mailgun").Mailgun)("key-eaf8a2206a04906b26355253061d2e34");
+  var packet = req.body.data; // Data should be a JSON string...
+
+  var sender     = 'dook@stardust.red';
+  var recipients = 'dook@stardust.red';
+  var subject    = 'Subject';
+  var html       = 'Some <b>awesome</b> html';
+
+  if(req.body.sender)
+    sender     = req.body.sender;
+  if(req.body.recipients)
+    recipients = req.body.recipients;
+  if(req.body.subject)
+    subject    = req.body.subject;
+  if(req.body.html)
+    html       = req.body.html;
 
   function validateEmail(email) {
     /* Validate email address with regex
@@ -22,7 +38,9 @@ module.exports.send = function(req, res) {
   // TODO: replace with sendRaw
   // sendText(sender, recipients, subject, text,
   //          [servername=''], [options={}], [callback(err)])
-  //mg.sendText(req.body. 
+  mg.sendText(sender, recipients, subject, html, function(err) {
+    res.send(err);
+  });
 };
 
 module.exports.receive = function(req, res) { res.status(204).end(); };
