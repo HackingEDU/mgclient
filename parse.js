@@ -1,9 +1,13 @@
 // Wrapper module for Parse
-var Parse = require("parse").Parse;
-Parse.initialize("appID", "jsKey");
+var apikeys = require("./apikeys");
+var appid   = apikeys.parse.appID;
+var jskey   = apikeys.parse.jsKey;
+var DATASET = apikeys.parse.className; // Name of Parse Class containing class names
+var DATACOL = apikeys.parse.classCol;  // Column name containing class names
 
-var DATASET = "datasets"; // Name of Parse Class containing class names
-var DATACOL = "setName";  // Column name containing class names
+var Parse = require("parse").Parse;
+Parse.initialize(apikeys.parse.appID, apikeys.parse.jsKey);
+
 
 module.exports.getClassNames = function(callback) {
   /* Queries Parse for fields located in DATASET under DATACOL
