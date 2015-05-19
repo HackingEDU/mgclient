@@ -27,7 +27,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // Set up routes
 app.use("/index", routes.index);
 app.post("/send", routes.send);
-
+app.get("/class", routes.getClassNames);
+app.post("/class", routes.getClass);
 
 
 
