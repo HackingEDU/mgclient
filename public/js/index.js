@@ -1,3 +1,1 @@
-$(document).ready(function() {
-  $("#form-email-input").jqte();
-});
+$(document).ready(function() {});
