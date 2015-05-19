@@ -1,4 +1,5 @@
-var Mailgun = new (require("mailgun").Mailgun)("mgKey");
+var mgkey   = require("./apikeys").mailgun.secretKey;
+var Mailgun = new (require("mailgun").Mailgun)(mgkey);
 
 module.exports.validateEmail = function(email) {
   /* Validate email address with regex (low priority)
