@@ -1,3 +1,6 @@
+var parse   = require("./parse");
+var mailgun = require("./mailgun");
+
 // Routes.js handles all get and post requests
 module.exports.index  = function(req, res) {
   res.render( "index", { message: "." } );
@@ -9,7 +12,6 @@ module.exports.send = function(req, res) {
     return;
   }
 
-  var mg = new (require("mailgun").Mailgun)("mailgun-API-key");
   var packet = req.body.data; // Data should be a JSON string...
 
   var sender     = '';
@@ -26,20 +28,8 @@ module.exports.send = function(req, res) {
   if(req.body.html)
     html       = req.body.html;
 
-
-  function validateEmail(email) {
-    /* Validate email address with regex
-     * TODO
-     *    @email: An email address to check
-     */
-    //res.status(500).send({ error: "email invalid" });
-    return true;
-  }
-
-  // TODO: replace with sendRaw
-  // sendText(sender, recipients, subject, text,
-  //          [servername=''], [options={}], [callback(err)])
-  mg.sendText(sender, recipients, subject, html, function(err) {
+  mailgun.sendText(sender, recipients, subject, html, function(err) {
+    // TODO: proper response
     res.send(err);
   });
 };
@@ -47,6 +37,29 @@ module.exports.send = function(req, res) {
 module.exports.receive = function(req, res) { res.status(204).end(); };
 
 module.exports.remove = function(req, res) { res.status(204).end(); };
+
+module.exports.getClassNames = function(req, res) {
+  if(!req.xhr) { // if request is not ajax
+    res.status(404).end();
+    return;
+  }
+
+  parse.getClassNames(function(json) {
+    res.send(json);
+  });
+};
+
+module.exports.getClass = function(req, res) {
+  if(!req.xhr) { // if request is not ajax
+    res.status(404).end();
+    return;
+  }
+
+  parse.getClass(req.body.className, function(json) {
+    res.send(json);
+  });
+};
+
 
 // // Example reading from the request query string of an HTTP get request.
 // app.get('/test', function(req, res) {
