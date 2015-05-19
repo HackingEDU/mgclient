@@ -13,13 +13,16 @@ html
     div#cont-banner
       div#banner-logo
       div#banner-image
-    div#cont-list
-      form#form-list
-        select#form-list-app
-        select#form-list-data
-        select#form-list-column
-      span#form-list-status
     div#cont-email
       form#form-email
-        textarea#form-email-input(name="email-input")
+        select#form-recipient-app
+        select#form-recipient-data
+        select#form-recipient-column
+        br
+        input#form-recipient-post(type="hidden")
+        label(for="form-email-sender") Sender
+        input#form-email-sender(type="text")
+        label(for="form-email-subject") Subject
+        input#form-email-subject(type="text")
+        textarea#form-email-html
         input#form-email-submit(type="submit")

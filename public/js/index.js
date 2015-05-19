@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $("#form-email-input").jqte();
+  $("#form-email-html").jqte();
 
   $("#form-email").on('submit', function(ev) {
     ev.preventDefault();
@@ -7,11 +7,13 @@ $(document).ready(function() {
     $.post(
       "/send",
       {
-        input: $("#form-email-input").val()
+        recipients: $("#form-recipients-post").val(),
+        sender: $("#form-email-sender").val(),
+        subject: $("#form-email-subject").val(),
+        html: $("#form-email-html").val()
       },
       function(res) {
-        // Function callback
-        console.log(res);
+        // res returns 'undefined' on success
       }
     );
   });
