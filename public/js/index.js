@@ -7,7 +7,7 @@ $(document).ready(function() {
     $.post(
       "/send",
       {
-        recipients: $("#form-recipients-post").val(),
+        recipients: $("#form-recipient-post").val(),
         sender: $("#form-email-sender").val(),
         subject: $("#form-email-subject").val(),
         html: $("#form-email-html").val()
