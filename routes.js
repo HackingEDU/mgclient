@@ -3,7 +3,27 @@ module.exports.index  = function(req, res) {
   res.render( "index", { message: "." } );
 };
 
-module.exports.send = function(req, res) { res.status(204).end(); };
+module.exports.send = function(req, res) {
+  var mg = new (require("mailgun").Mailgun);
+  var packet = req.body.input; // Data should be a JSON object...
+
+  console.warn(packet);
+  res.render(packet);
+
+  function validateEmail(email) {
+    /* Validate email address with regex
+     * TODO
+     *    @email: An email address to check
+     */
+    //res.status(500).send({ error: "email invalid" });
+    return true;
+  }
+
+  // TODO: replace with sendRaw
+  // sendText(sender, recipients, subject, text,
+  //          [servername=''], [options={}], [callback(err)])
+  //mg.sendText(req.body. 
+};
 
 module.exports.receive = function(req, res) { res.status(204).end(); };
 

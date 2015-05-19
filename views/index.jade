@@ -1,5 +1,25 @@
-extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html
+  head
+    title HackingEDU Mailgun Client
+    link(rel="stylesheet", type="text/css", href="css/index.css")
+    link(rel="stylesheet", type="text/css", href="js/jqte/jquery-te-1.4.0.css")
+
+    script(type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+    script(type="text/javascript", src="js/jqte/jquery-te-1.4.0.min.js")
+    script(type="text/javascript", src="js/index.js")
+  body
+    div#cont-banner
+      div#banner-logo
+      div#banner-image
+    div#cont-list
+      form#form-list
+        select#form-list-app
+        select#form-list-data
+        select#form-list-column
+      span#form-list-status
+    div#cont-email
+      form#form-email
+        textarea#form-email-input(name="email-input")
+        input#form-email-submit(type="submit")
