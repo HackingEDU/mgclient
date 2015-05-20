@@ -15,6 +15,7 @@
     "mailgun": "^0.5.0",
     "morgan": "~1.5.1",
     "parse": "^1.4.2",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "mailcomposer": "~0.2.12"
   }
 }
