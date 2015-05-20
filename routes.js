@@ -15,20 +15,16 @@ module.exports.send = function(req, res) {
   var packet = req.body.data; // Data should be a JSON string...
 
   var sender     = '';
-  var recipients = '';
+  var recipients = [];
   var subject    = '';
   var html       = '';
 
-  if(req.body.sender)
-    sender     = req.body.sender;
-  if(req.body.recipients)
-    recipients = req.body.recipients;
-  if(req.body.subject)
-    subject    = req.body.subject;
-  if(req.body.html)
-    html       = req.body.html;
+  if(req.body.sender)     { sender     = req.body.sender; }
+  if(req.body.recipients) { recipients = req.body.recipients.split(","); }
+  if(req.body.subject)    { subject    = req.body.subject; }
+  if(req.body.html)       { html       = req.body.html; }
 
-  mailgun.sendText(sender, recipients, subject, html, function(err) {
+  mailgun.sendEmail(sender, recipients, subject, html, function(err) {
     // TODO: proper response
     res.send(err);
   });
