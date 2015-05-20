@@ -1,0 +1,31 @@
+
+doctype html
+html
+  head
+    title HackingEDU Mailgun Client
+    link(rel="stylesheet", type="text/css", href="css/index.css")
+    link(rel="stylesheet", type="text/css", href="js/jqte/jquery-te-1.4.0.css")
+
+    script(type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+    script(type="text/javascript", src="js/jqte/jquery-te-1.4.0.min.js")
+    script(type="text/javascript", src="js/index.js")
+  body
+    div#cont-viewport
+      div#cont-banner
+        div#banner-logo
+        div#banner-image
+      div#cont-email
+        h2 Hacking EDU Mailgun Client
+        form#form-email
+          label(for="form-email-sender") Classes: 
+          select#form-recipient-class
+          label(for="form-email-sender") Fields: 
+          select#form-recipient-column
+          br
+          input#form-recipient-post(type="hidden")
+          label(for="form-email-sender") Sender: 
+          input#form-email-sender(type="text")
+          label(for="form-email-subject") Subject: 
+          input#form-email-subject(type="text")
+          textarea#form-email-html
+          input#form-email-submit(type="submit")
