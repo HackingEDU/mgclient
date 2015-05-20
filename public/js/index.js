@@ -102,6 +102,9 @@ $(document).ready(function() {
   // When submitting form-email...
   $("#form-email").on('submit', function(ev) {
     ev.preventDefault();
+    $("#form-email-submit").on("click", function() {
+      $(this).prop("disabled", true);
+    });
 
     $.post(
       "/send",
