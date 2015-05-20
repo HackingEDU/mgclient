@@ -5,12 +5,30 @@ var FormRecipient = function(jclass, jcolumn) {
    */
   this.form_class  =  jclass;
   this.form_column = jcolumn;
-  this.list_class  = [];
+  this.active_class = "";
+  this.classes     = {};
 
   this.addClass    = function(pclass) {
-    this.list_class.push(pclass);
+    /* Adds this class into selectable classes
+     */
+    this.classes[pclass.className] = pclass;
+    this.form_class.append("<option>" + pclass.className + "</option>");
   };
-  this.activeClass = function(nclass) { };
+
+  this.switchClass = function(name) {
+    /* Reset form_column to new class
+     *    @name: name of class as string
+     */
+    var pclass = this.classes[name];
+    this.active_class = name;
+
+    this.form_column.empty();
+    for(var i = 0; i < pclass.classFields.length; i++) {
+      this.form_column.append(
+        "<option>" + pclass.classFields[i] + "</option>"
+      );
+    }
+  };
 }
 
 var ParseClass = function(name) {
@@ -18,26 +36,41 @@ var ParseClass = function(name) {
   this.classFields = [];
   this.json        = {};
 
-  this.init    = function(callback) {
+  this.init    = function() {
     /* Initialize classFields and json
      *    @callback(fields, json):
      *      fields - list of fieldNames
      *      json   - json object of parse class
      */
+
+    var _this = this; // In order to keep scope, we have to reassign 'this'
+
     $.ajax("/class", {
       method: "POST",
-      data: { "className" : this.className },
+      data: { "className" : _this.className },
       dataType: "json",
       success: function(json) {
-        this.json = json;
+        // The "this" in this scope refers to the jQuery object
+        _this.json = json;
 
         // Extract fields
-        this.classFields = Object.keys(json[0]); // TODO: exception
-
-        callback(this.json, this.classFields);
+        _this.classFields = Object.keys(json[0]); // TODO: exception
       }
     });
   }
+
+  this.getColumn = function(name) {
+    // Return column as comma-seperated strings
+    var retval = [];
+
+    // TODO: check if column name exists
+    for(var i = 0; i < this.json.length; i++) {
+      retval.push(this.json[i][name]);
+    }
+    retval = retval.join(",");
+
+    return retval;
+  };
 }
 
 
@@ -45,7 +78,7 @@ var ParseClass = function(name) {
 $(document).ready(function() {
 
   var form_recipient = new FormRecipient(
-    $("#form-recipient-class"), $("#form-recipient-class")
+    $("#form-recipient-class"), $("#form-recipient-column")
   );
 
   // Populate form-recipient selections
@@ -55,14 +88,15 @@ $(document).ready(function() {
     success: function(data) {
       for(var i = 0; i < data.length; i++) {
         var pclass = new ParseClass(data[i]);
-        pclass.init(function(fields, json) {
-        });
+        pclass.init();
         form_recipient.addClass(pclass);
-        console.log(form_recipient);
       }
     }
   });
   // When updating selection...
+  form_recipient.form_class.on("change", function() {
+    form_recipient.switchClass( $(this).val() );
+  });
 
 
   // When submitting form-email...
@@ -72,13 +106,19 @@ $(document).ready(function() {
     $.post(
       "/send",
       {
-        recipients: $("#form-recipient-post").val(),
+        recipients: (function(fc) {
+          var pc = fc.classes[fc.active_class];
+          console.log( pc.getColumn(fc.form_column.val()) );
+          return pc.getColumn(fc.form_column.val());
+        }(form_recipient)),
         sender: $("#form-email-sender").val(),
         subject: $("#form-email-subject").val(),
         html: $("#form-email-html").val()
       },
       function(res) {
         // res returns 'undefined' on success
+        // Don't do anything with it
+
       }
     );
   });
